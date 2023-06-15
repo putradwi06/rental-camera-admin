@@ -190,6 +190,7 @@ class _AddPostCameraScreenState extends State<AddPostCameraScreen> {
                           title: titleController.text,
                           subTitle: subTitleController.text,
                           description: descriptionController.text,
+                          type: cameraTypeController.text,
                           picture: imagePath,
                           stock: int.parse(stockController.text),
                           price: int.parse(priceController.text),

@@ -156,7 +156,9 @@ class _ApprovalRentalCamerasScreenState
                 adminRepository.approvalCamera(booking, false);
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: kRedBgColor, fixedSize: Size(80, 25)),
+                backgroundColor: kRedBgColor,
+                fixedSize: Size(80, 25),
+              ),
               child: const Text("Batal"),
             ),
             const SizedBox(height: 10),
@@ -165,7 +167,9 @@ class _ApprovalRentalCamerasScreenState
                 adminRepository.approvalCamera(booking, true);
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: kGreenBgColor, fixedSize: Size(80, 25)),
+                backgroundColor: kGreenBgColor,
+                fixedSize: Size(80, 25),
+              ),
               child: const Text("Terima"),
             ),
           ],

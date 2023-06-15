@@ -4,6 +4,7 @@ class DetailCameraModel {
   final String subTitle;
   final String description;
   final String picture;
+  final String type;
   final int stock;
   final int price;
 
@@ -14,16 +15,18 @@ class DetailCameraModel {
     required this.description,
     required this.picture,
     required this.stock,
+    required this.type,
     required this.price,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'cameraId': cameraId,
+      'camera_id': cameraId,
       'title': title,
-      'subTitle': subTitle,
+      'sub_title': subTitle,
       'description': description,
       'picture': picture,
+      'type': type,
       'stock': stock,
       'price': price,
     };
@@ -37,6 +40,7 @@ class DetailCameraModel {
       description: map['description'] as String,
       picture: map['picture'] as String,
       stock: map['stock'] as int,
+      type: map['type'] as String,
       price: map['price'] as int,
     );
   }
@@ -47,6 +51,7 @@ class DetailCameraModel {
     String? subTitle,
     String? description,
     String? picture,
+    String? type,
     int? stock,
     int? price,
   }) {
@@ -56,6 +61,7 @@ class DetailCameraModel {
       subTitle: subTitle ?? this.subTitle,
       description: description ?? this.description,
       picture: picture ?? this.picture,
+      type: type ?? this.type,
       stock: stock ?? this.stock,
       price: price ?? this.price,
     );
