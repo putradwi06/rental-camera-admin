@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:rental_camera_admin/models/detail_camera_model.dart';
 import 'package:rental_camera_admin/repository/admin_repository.dart';
+import 'package:rental_camera_admin/screens/dashboard_screen.dart';
 import 'package:rental_camera_admin/utils/image_helper.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -196,7 +197,15 @@ class _AddPostCameraScreenState extends State<AddPostCameraScreen> {
                           price: int.parse(priceController.text),
                         );
 
-                        await adminRepository.postCamera(detailCameraModel);
+                        final result = await adminRepository.postCamera(detailCameraModel);
+                        if (result == 1) {
+                          titleController.clear();
+                          subTitleController.clear();
+                          descriptionController.clear();
+                          cameraTypeController.clear();
+                          stockController.clear();
+                          priceController.clear();
+                        }
                       },
                     ),
                   ),

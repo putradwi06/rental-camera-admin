@@ -32,8 +32,9 @@ class AdminRepository {
   }
 
   Future<int> postCamera(DetailCameraModel detailCameraModel) async {
-    final cameraRef = _firestore.collection("Cameras");
-    cameraRef.doc(cameraRef.id).set(detailCameraModel.copyWith(cameraId: cameraRef.id).toMap());
+    final cameraId = _firestore.collection("Cameras").doc().id;
+
+    await _firestore.collection("Cameras").doc(cameraId).set(detailCameraModel.copyWith(cameraId: cameraId).toMap());
     return 1;
   }
 
