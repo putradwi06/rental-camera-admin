@@ -31,7 +31,7 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
         }
 
         if (snapshot.hasData) {
-          final List<Booking> listCamera = snapshot.data ?? [];
+          final List<Booking> listCamera = snapshot.data?.where((element) => element.status != "Pending").toList() ?? [];
           return Container(
             padding: const EdgeInsets.all(24),
             decoration: const BoxDecoration(
@@ -67,6 +67,18 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
                       DataColumn(
                         label: Flexible(
                           child: Text("Total Price",
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Flexible(
+                          child: Text("Status",
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Flexible(
+                          child: Text("Waktu Berakhir",
                               overflow: TextOverflow.ellipsis),
                         ),
                       ),
@@ -112,36 +124,35 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
               overflow: TextOverflow.ellipsis),
         )),
         DataCell(Flexible(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: booking.listCameraBooking
-                .map((camera) => Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 4),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                camera.picture,
-                                width: 10.w,
-                                height: 10.h,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(camera.title, overflow: TextOverflow.ellipsis),
-                            Text(
-                              "Quantity: ${camera.quantity.toString()}",
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ))
-                .toList(),
+          child: Text(booking.status.toString(),
+              overflow: TextOverflow.ellipsis),
+        )),
+        DataCell(Flexible(
+          child: Text(booking.endRentalTime!.toDate().toString(),
+              overflow: TextOverflow.ellipsis),
+        )),
+        DataCell(Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  booking.cameraBooking.picture,
+                  width: 10.w,
+                  height: 10.h,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(booking.cameraBooking.title, overflow: TextOverflow.ellipsis),
+              Text(
+                "Quantity: ${booking.cameraBooking.quantity.toString()}",
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         )),
         DataCell(

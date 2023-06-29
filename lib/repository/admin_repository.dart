@@ -15,17 +15,43 @@ class AdminRepository {
   Stream<List<Booking>> getBookings() {
     final getBookings = _firestore.collection("Booking"); // Bookings
 
-    return getBookings
-        .snapshots()
-        .map((documents) => documents.docs.map((document) {
-              return Booking.fromMap(document.data());
-            }).toList());
+    return getBookings.snapshots().map((documents) {
+      final ikang = documents.docs.map((document) {
+        return Booking.fromMap(document.data());
+      }).toList();
+
+      debugPrint("ikag: $ikang");
+      return ikang;
+    });
   }
 
   Future approvalCamera(Booking booking, bool isApprove) async {
     if (isApprove) {
-      _firestore.collection("Booking").doc(booking.bookingId).update(
-          booking.copyWith(status: "OnRental").toMap());
+      final cameraRef = await _firestore
+          .collection("Cameras")
+          .doc(booking.cameraBooking.cameraId)
+          .get();
+      debugPrint("sock: ${cameraRef.data()}");
+
+      final stockCamera = CameraModel.fromMap(cameraRef.data()!);
+
+      Timestamp currentTime = Timestamp.now();
+      int threeDaysInSeconds = 3 * 24 * 60 * 60;
+      int futureTimeInSeconds = currentTime.seconds + threeDaysInSeconds;
+      Timestamp futureTimestamp = Timestamp(futureTimeInSeconds, 0);
+
+      final newBooking = booking.copyWith(status: "OnRental",
+            startRentalTime: Timestamp.now(), endRentalTime: futureTimestamp);
+
+      _firestore
+          .collection("Cameras")
+          .doc(booking.cameraBooking.cameraId)
+          .update(booking.cameraBooking.copyWith(stock: stockCamera.stock - booking.cameraBooking.quantity!).toMap());
+
+      _firestore
+          .collection("Booking")
+          .doc(booking.bookingId)
+          .update(newBooking.toMap());
     } else {
       _firestore.collection("Booking").doc(booking.bookingId).delete();
     }
@@ -34,9 +60,10 @@ class AdminRepository {
   Future<int> postCamera(DetailCameraModel detailCameraModel) async {
     final cameraId = _firestore.collection("Cameras").doc().id;
 
-    await _firestore.collection("Cameras").doc(cameraId).set(detailCameraModel.copyWith(cameraId: cameraId).toMap());
+    await _firestore
+        .collection("Cameras")
+        .doc(cameraId)
+        .set(detailCameraModel.copyWith(cameraId: cameraId).toMap());
     return 1;
   }
-
-
 }

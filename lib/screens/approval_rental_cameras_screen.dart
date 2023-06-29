@@ -32,10 +32,8 @@ class _ApprovalRentalCamerasScreenState
           return const Center(child: CircularProgressIndicator());
         }
 
-        debugPrint("approval: ${snapshot.hasData}");
-
         if (snapshot.hasData) {
-          final List<Booking> listCamera = snapshot.data ?? [];
+          final List<Booking> listCamera = snapshot.data?.where((element) => element.status == "Pending").toList() ?? [];
           return Container(
             padding: const EdgeInsets.all(24),
             decoration: const BoxDecoration(
@@ -82,6 +80,12 @@ class _ApprovalRentalCamerasScreenState
                       ),
                       DataColumn(
                         label: Flexible(
+                          child: Text("Bukti Transfer",
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Flexible(
                             child: Text("Action",
                                 overflow: TextOverflow.ellipsis)),
                       ),
@@ -116,35 +120,39 @@ class _ApprovalRentalCamerasScreenState
               overflow: TextOverflow.ellipsis),
         )),
         DataCell(Flexible(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: booking.listCameraBooking
-                .map((camera) => Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 4),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                camera.picture,
-                                width: 10.w,
-                                height: 10.h,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Text(camera.title, overflow: TextOverflow.ellipsis),
-                            Text(
-                              "Quantity: ${camera.quantity.toString()}",
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ))
-                .toList(),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    booking.cameraBooking.picture,
+                    width: 10.w,
+                    height: 10.h,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Text(booking.cameraBooking.title, overflow: TextOverflow.ellipsis),
+                Text(
+                  "Quantity: ${booking.cameraBooking.quantity.toString()}",
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        )),
+        DataCell(Flexible(
+          child:ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              booking.buktiTransfer,
+              width: 10.w,
+              height: 10.h,
+              fit: BoxFit.cover,
+            ),
           ),
         )),
         DataCell(Column(

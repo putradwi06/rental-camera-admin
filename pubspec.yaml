@@ -18,6 +18,8 @@ dependencies:
   url_launcher: ^6.1.2
   loading_overlay: ^0.3.0
   firebase_storage: ^11.2.2
+  equatable: ^2.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
