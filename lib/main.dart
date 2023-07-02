@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:rental_camera_admin/screens/dashboard_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -8,7 +9,6 @@ import 'menu_app_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   try {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -24,6 +24,8 @@ void main() async {
       await Firebase.initializeApp();
     }
   }
+  await initializeDateFormatting('id');
+
   runApp(const MyApp());
 }
 

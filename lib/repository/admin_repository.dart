@@ -20,7 +20,6 @@ class AdminRepository {
         return Booking.fromMap(document.data());
       }).toList();
 
-      debugPrint("ikag: $ikang");
       return ikang;
     });
   }
@@ -31,13 +30,12 @@ class AdminRepository {
           .collection("Cameras")
           .doc(booking.cameraBooking.cameraId)
           .get();
-      debugPrint("sock: ${cameraRef.data()}");
 
       final stockCamera = CameraModel.fromMap(cameraRef.data()!);
 
       Timestamp currentTime = Timestamp.now();
-      int threeDaysInSeconds = 3 * 24 * 60 * 60;
-      int futureTimeInSeconds = currentTime.seconds + threeDaysInSeconds;
+      int daysInSecond = booking.rentalDay * 24 * 60 * 60;
+      int futureTimeInSeconds = currentTime.seconds + daysInSecond;
       Timestamp futureTimestamp = Timestamp(futureTimeInSeconds, 0);
 
       final newBooking = booking.copyWith(status: "OnRental",
@@ -55,6 +53,25 @@ class AdminRepository {
     } else {
       _firestore.collection("Booking").doc(booking.bookingId).delete();
     }
+  }
+
+  Future<void> completedRental(Booking booking) async {
+    await _firestore
+        .collection("Booking")
+        .doc(booking.bookingId)
+        .update(booking.copyWith(status: "Completed").toMap());
+
+    final cameraRef = await _firestore
+        .collection("Cameras")
+        .doc(booking.cameraBooking.cameraId)
+        .get();
+
+    final stockCamera = CameraModel.fromMap(cameraRef.data()!);
+
+    await _firestore
+        .collection("Cameras")
+        .doc(booking.cameraBooking.cameraId)
+        .update(booking.cameraBooking.copyWith(stock: stockCamera.stock + booking.cameraBooking.quantity!).toMap());
   }
 
   Future<int> postCamera(DetailCameraModel detailCameraModel) async {

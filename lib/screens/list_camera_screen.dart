@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rental_camera_admin/models/booking_model.dart';
 import 'package:rental_camera_admin/repository/admin_repository.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../styles.dart';
 
@@ -128,7 +130,7 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
               overflow: TextOverflow.ellipsis),
         )),
         DataCell(Flexible(
-          child: Text(booking.endRentalTime!.toDate().toString(),
+          child: Text(getDateParse(booking.endRentalTime!.toDate().toString(), 'EEEE, dd MMMM yyyy'),
               overflow: TextOverflow.ellipsis),
         )),
         DataCell(Padding(
@@ -155,15 +157,51 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
             ],
           ),
         )),
-        DataCell(
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                backgroundColor: kGreenBgColor, fixedSize: Size(90, 25)),
-            child: Text("Hubungi"),
-          ),
-        ),
+        DataCell(Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                whatsappShare(booking.userBookingNoTlpn.toString());
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kRedBgColor,
+                fixedSize: Size(100, 25),
+              ),
+              child: const Text("Hubungi"),
+            ),
+            const SizedBox(height: 10),
+            if(booking.status != "Completed")
+    ElevatedButton(
+              onPressed: () {
+               AdminRepository().completedRental(booking);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kGreenBgColor,
+                fixedSize: Size(100, 25),
+              ),
+              child: const Text("Selesai"),
+            ),
+          ],
+        )),
       ],
     );
   }
+  String getDateParse(String parse, String formatDate) {
+    final dateTime = DateTime.parse(parse);
+
+    // print('dateParse: ${dateTime.toString()}');
+    // print('isValidDate: ${isValidDateOnly(parse)}');
+
+    final format = DateFormat(formatDate, "id");
+    final clockString = format.format(dateTime);
+    return clockString;
+  }
+
+  Future<void> whatsappShare(String number) async {
+    var url = Uri.parse("https://wa.me/$number");
+    await launchUrl(url, mode: LaunchMode.externalApplication);
+  }
+
 }

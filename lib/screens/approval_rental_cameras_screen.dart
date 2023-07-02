@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rental_camera_admin/repository/admin_repository.dart';
 import 'package:rental_camera_admin/styles.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -184,5 +185,16 @@ class _ApprovalRentalCamerasScreenState
         )),
       ],
     );
+  }
+
+   String getDateParse(String parse, String formatDate) {
+    final dateTime = DateTime.parse(parse);
+
+    // print('dateParse: ${dateTime.toString()}');
+    // print('isValidDate: ${isValidDateOnly(parse)}');
+
+    final format = DateFormat(formatDate, "id");
+    final clockString = format.format(dateTime);
+    return clockString;
   }
 }

@@ -118,14 +118,20 @@ class _AddPostCameraScreenState extends State<AddPostCameraScreen> {
                   decoration: InputDecoration(
                       hintText: "Harga", hintStyle: greyTextStyle),
                 ),
-                const SizedBox(height: 24),
-                TextField(
-                  controller: cameraTypeController,
-                  style: blackTextStyle,
-                  decoration: InputDecoration(
-                      hintText: "Camera Type", hintStyle: greyTextStyle),
-                ),
-                const SizedBox(height: 24),
+                 const SizedBox(height: 24),
+                 Align(
+                   alignment: AlignmentDirectional.topStart,
+                   child: DropdownMenu(
+                     width: 250,
+                     controller: cameraTypeController,
+                     hintText: "Pilih tipe kamera",
+                       dropdownMenuEntries: const [
+                    DropdownMenuEntry(value: "Sony", label: "Sony"),
+                    DropdownMenuEntry(value: "Cannon", label: "Cannon"),
+                    DropdownMenuEntry(value: "Fuji", label: "Fuji"),
+                ]),
+                 ),
+                const SizedBox(height: 16),
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(vertical: 12),
