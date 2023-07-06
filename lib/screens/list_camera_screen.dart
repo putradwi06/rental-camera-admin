@@ -106,7 +106,6 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
             ),
           );
         }
-
         return const Center(child: CircularProgressIndicator());
       },
     );
