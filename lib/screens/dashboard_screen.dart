@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rental_camera_admin/screens/data_master_screen.dart';
 import 'package:rental_camera_admin/styles.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -19,6 +20,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> with ChangeNotifier {
   int _currentPage = 0;
   final List<Widget> _pages = [
+    const DataMasterScreen(),
     const ListCameraScreen(),
     const ApprovalRentalCamerasScreen(),
     const AddPostCameraScreen(),
@@ -83,14 +85,19 @@ class SideMenu extends StatelessWidget {
             press: () => onTap(0),
           ),
           DrawerListTile(
+            title: "List Rental",
+            icon: Icons.list,
+            press: () => onTap(1),
+          ),
+          DrawerListTile(
             title: "Approval",
             icon: Icons.approval_outlined,
-            press: () => onTap(1),
+            press: () => onTap(2),
           ),
           DrawerListTile(
             title: "Add Camera",
             icon: Icons.add_outlined,
-            press: () => onTap(2),
+            press: () => onTap(3),
           ),
         ],
       ),

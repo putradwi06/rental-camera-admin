@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rental_camera_admin/models/booking_model.dart';
 import 'package:rental_camera_admin/models/detail_camera_model.dart';
 
+import '../models/users_model.dart';
+
 class AdminRepository {
   final FirebaseFirestore _firestore;
 
@@ -13,14 +15,26 @@ class AdminRepository {
   AdminRepository._internal() : _firestore = FirebaseFirestore.instance;
 
   Stream<List<Booking>> getBookings() {
-    final getBookings = _firestore.collection("Booking"); // Bookings
+    final getBookings = _firestore.collection("Booking").orderBy('created_at', descending: true); // Bookings
 
     return getBookings.snapshots().map((documents) {
-      final ikang = documents.docs.map((document) {
+      final data = documents.docs.map((document) {
         return Booking.fromMap(document.data());
       }).toList();
 
-      return ikang;
+      return data;
+    });
+  }
+
+  Stream<List<UserModel>> getUsers() {
+    final getUsers = _firestore.collection("Users"); // Bookings
+
+    return getUsers.snapshots().map((documents) {
+      final data = documents.docs.map((document) {
+        return UserModel.fromMap(document.data());
+      }).toList();
+
+      return data;
     });
   }
 
