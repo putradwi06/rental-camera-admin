@@ -33,76 +33,81 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
         }
 
         if (snapshot.hasData) {
-          final List<Booking> listCamera = snapshot.data?.where((element) => element.status != "Pending").toList() ?? [];
-          return Container(
-            padding: const EdgeInsets.all(24),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(24)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "List Camera On Rental",
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: DataTable(
-                    columnSpacing: 12,
-                    sortAscending: true,
-                    dataRowHeight: 18.h,
-                    columns: const [
-                      DataColumn(
-                        label: Text(
-                          "Booking ID",
-                          overflow: TextOverflow.ellipsis,
+          final List<Booking> listCamera = snapshot.data
+                  ?.where((element) => element.status != "Pending")
+                  .toList() ??
+              [];
+          return SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(24)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "List Camera On Rental",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: DataTable(
+                      columnSpacing: 12,
+                      sortAscending: true,
+                      dataRowHeight: 18.h,
+                      columns: const [
+                        DataColumn(
+                          label: Text(
+                            "Booking ID",
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      DataColumn(
-                        label: Flexible(
-                          child: Text("Rentail Day",
-                              overflow: TextOverflow.ellipsis),
+                        DataColumn(
+                          label: Flexible(
+                            child: Text("Rentail Day",
+                                overflow: TextOverflow.ellipsis),
+                          ),
                         ),
-                      ),
-                      DataColumn(
-                        label: Flexible(
-                          child: Text("Total Price",
-                              overflow: TextOverflow.ellipsis),
+                        DataColumn(
+                          label: Flexible(
+                            child: Text("Total Price",
+                                overflow: TextOverflow.ellipsis),
+                          ),
                         ),
-                      ),
-                      DataColumn(
-                        label: Flexible(
-                          child: Text("Status",
-                              overflow: TextOverflow.ellipsis),
+                        DataColumn(
+                          label: Flexible(
+                            child:
+                                Text("Status", overflow: TextOverflow.ellipsis),
+                          ),
                         ),
-                      ),
-                      DataColumn(
-                        label: Flexible(
-                          child: Text("Waktu Berakhir",
-                              overflow: TextOverflow.ellipsis),
+                        DataColumn(
+                          label: Flexible(
+                            child: Text("Waktu Berakhir",
+                                overflow: TextOverflow.ellipsis),
+                          ),
                         ),
-                      ),
-                      DataColumn(
-                        label: Flexible(
-                          child: Text("Camera Booking",
-                              overflow: TextOverflow.ellipsis),
+                        DataColumn(
+                          label: Flexible(
+                            child: Text("Camera Booking",
+                                overflow: TextOverflow.ellipsis),
+                          ),
                         ),
+                        DataColumn(
+                          label: Flexible(
+                              child: Text("Action",
+                                  overflow: TextOverflow.ellipsis)),
+                        ),
+                      ],
+                      rows: List.generate(
+                        listCamera.length,
+                        (index) => bookingDataRow(listCamera[index]),
                       ),
-                      DataColumn(
-                        label: Flexible(
-                            child: Text("Action",
-                                overflow: TextOverflow.ellipsis)),
-                      ),
-                    ],
-                    rows: List.generate(
-                      listCamera.length,
-                      (index) => bookingDataRow(listCamera[index]),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }
@@ -126,11 +131,13 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
               overflow: TextOverflow.ellipsis),
         )),
         DataCell(Flexible(
-          child: Text(booking.status.toString(),
-              overflow: TextOverflow.ellipsis),
+          child:
+              Text(booking.status.toString(), overflow: TextOverflow.ellipsis),
         )),
         DataCell(Flexible(
-          child: Text(getDateParse(booking.endRentalTime!.toDate().toString(), 'EEEE, dd MMMM yyyy'),
+          child: Text(
+              getDateParse(booking.endRentalTime!.toDate().toString(),
+                  'EEEE, dd MMMM yyyy'),
               overflow: TextOverflow.ellipsis),
         )),
         DataCell(Padding(
@@ -149,7 +156,8 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
                 ),
               ),
               const SizedBox(height: 4),
-              Text(booking.cameraBooking.title, overflow: TextOverflow.ellipsis),
+              Text(booking.cameraBooking.title,
+                  overflow: TextOverflow.ellipsis),
               Text(
                 "Quantity: ${booking.cameraBooking.quantity.toString()}",
                 overflow: TextOverflow.ellipsis,
@@ -172,22 +180,23 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
               child: const Text("Hubungi"),
             ),
             const SizedBox(height: 10),
-            if(booking.status != "Completed")
-    ElevatedButton(
-              onPressed: () {
-               AdminRepository().completedRental(booking);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kGreenBgColor,
-                fixedSize: Size(100, 25),
+            if (booking.status != "Completed")
+              ElevatedButton(
+                onPressed: () {
+                  AdminRepository().completedRental(booking);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kGreenBgColor,
+                  fixedSize: Size(100, 25),
+                ),
+                child: const Text("Selesai"),
               ),
-              child: const Text("Selesai"),
-            ),
           ],
         )),
       ],
     );
   }
+
   String getDateParse(String parse, String formatDate) {
     final dateTime = DateTime.parse(parse);
 
@@ -200,8 +209,9 @@ class _ListCameraScreenState extends State<ListCameraScreen> {
   }
 
   Future<void> whatsappShare(String number) async {
-    var url = Uri.parse("https://wa.me/$number");
+    String formattedNumber = "62" + number;
+
+    var url = Uri.parse("https://wa.me/$formattedNumber");
     await launchUrl(url, mode: LaunchMode.externalApplication);
   }
-
 }

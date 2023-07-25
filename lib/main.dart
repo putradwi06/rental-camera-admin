@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
+import 'package:rental_camera_admin/login/login.dart';
 import 'package:rental_camera_admin/screens/dashboard_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -34,16 +35,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveSizer(
-        builder: (_, __, ___) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: ChangeNotifierProvider<MenuAppController>(
-              create: (_) => MenuAppController(),
-              child: const DashboardScreen(),
-            ),
-          );
-        }
-    );
+    return ResponsiveSizer(builder: (_, __, ___) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: ChangeNotifierProvider<MenuAppController>(
+          create: (_) => MenuAppController(),
+          child: const DashboardScreen(),
+        ),
+      );
+    });
   }
 }
