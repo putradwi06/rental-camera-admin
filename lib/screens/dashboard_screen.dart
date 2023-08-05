@@ -11,6 +11,8 @@ import 'approval_rental_cameras_screen.dart';
 import 'list_camera_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
+  static const routeName = '/dashboard-page';
+
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override

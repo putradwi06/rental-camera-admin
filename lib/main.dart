@@ -4,8 +4,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:rental_camera_admin/login/login.dart';
 import 'package:rental_camera_admin/screens/dashboard_screen.dart';
+import 'package:rental_camera_admin/utils/navigator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import 'login/login_page.dart';
 import 'menu_app_controller.dart';
 
 void main() async {
@@ -38,10 +40,15 @@ class MyApp extends StatelessWidget {
     return ResponsiveSizer(builder: (_, __, ___) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ChangeNotifierProvider<MenuAppController>(
-          create: (_) => MenuAppController(),
-          child: const DashboardScreen(),
-        ),
+        navigatorKey: navigatorKey,
+        initialRoute: LoginPage.routeName,
+        routes: {
+          DashboardScreen.routeName: (_) => ChangeNotifierProvider<MenuAppController>(
+      create: (_) => MenuAppController(),
+      child: DashboardScreen()
+      ),
+          LoginPage.routeName: (_) => const LoginPage(),
+        },
       );
     });
   }
